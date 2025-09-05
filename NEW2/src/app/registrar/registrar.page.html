@@ -1,0 +1,54 @@
+
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Registrar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registro de Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item [ngClass]="{'input-error': errores['nombre']}">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="nombre" type="text" (ionInput)="soloLetrasInput($event, 'nombre')"></ion-input>
+      </ion-item>
+      <div *ngIf="errores['nombre']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['nombre'] }}</div>
+      <ion-item [ngClass]="{'input-error': errores['apellido']}">
+        <ion-label position="floating">Apellido</ion-label>
+        <ion-input [(ngModel)]="apellido" type="text" (ionInput)="soloLetrasInput($event, 'apellido')"></ion-input>
+      </ion-item>
+      <div *ngIf="errores['apellido']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['apellido'] }}</div>
+      <ion-item [ngClass]="{'input-error': errores['edad']}">
+        <ion-label position="floating">Edad</ion-label>
+        <ion-input [(ngModel)]="edad" type="number" (ionInput)="validarEdad()"></ion-input>
+      </ion-item>
+  <div *ngIf="errores['edad']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['edad'] }}</div>
+      <ion-item [ngClass]="{'input-error': errores['email']}">
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input [(ngModel)]="email" type="email"></ion-input>
+      </ion-item>
+      <div *ngIf="errores['email']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['email'] }}</div>
+      <ion-item [ngClass]="{'input-error': errores['contrasena']}">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="contrasena" type="password"></ion-input>
+      </ion-item>
+      <div *ngIf="errores['contrasena']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['contrasena'] }}</div>
+      <ion-button expand="full" class="ion-margin-top" (click)="registrar()">Registrar</ion-button>
+      <div style="margin-top: 2rem; text-align: center;">
+        <ion-label color="medium">¿Ya tiene un usuario?</ion-label>
+        <br />
+        <ion-button color="secondary" fill="outline" (click)="goIngresar()">Ingresar</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<style>
+.input-error {
+  --highlight-color-focused: #ff3333;
+  border: 1.5px solid #ff3333 !important;
+  border-radius: 8px;
+}
+</style>

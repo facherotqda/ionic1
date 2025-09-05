@@ -35,4 +35,8 @@ export class IngresarPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  goRegistrar() {
+    this.router.navigate(['/registrar']);
+  }
+
 }
