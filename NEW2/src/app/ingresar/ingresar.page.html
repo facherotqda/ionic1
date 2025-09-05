@@ -17,19 +17,25 @@
       <ion-card-title>Login</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-
       <ion-item>
         <ion-label position="floating">Usuario</ion-label>
         <ion-input [(ngModel)]="usuario" type="text"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input [(ngModel)]="contrasena" type="password"></ion-input>
       </ion-item>
-
       <ion-button expand="full" class="ion-margin-top" (click)="ingresar()">Ingresar</ion-button>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card class="quick-access-card">
+    <ion-card-content>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 4px;">
+        <ion-button shape="round" style="border-radius:50px; font-size:0.95rem; box-shadow:0 2px 8px rgba(0,0,0,0.10); padding:0 18px; min-width:120px; width:auto;" color="secondary" (click)="goHome()">Usuario 1</ion-button>
+        <ion-button shape="round" style="border-radius:50px; font-size:0.95rem; box-shadow:0 2px 8px rgba(0,0,0,0.10); padding:0 18px; min-width:120px; width:auto;" color="tertiary" (click)="goHome()">Usuario 2</ion-button>
+        <ion-button shape="round" style="border-radius:50px; font-size:0.95rem; box-shadow:0 2px 8px rgba(0,0,0,0.10); padding:0 18px; min-width:120px; width:auto;" color="success" (click)="goHome()">Usuario 3</ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 
