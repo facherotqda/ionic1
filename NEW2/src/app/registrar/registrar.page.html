@@ -28,7 +28,7 @@
   <div *ngIf="errores['edad']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['edad'] }}</div>
       <ion-item [ngClass]="{'input-error': errores['email']}">
         <ion-label position="floating">Correo electrónico</ion-label>
-        <ion-input [(ngModel)]="email" type="email"></ion-input>
+        <ion-input [(ngModel)]="email" type="email" (ionInput)="validarEmail()"></ion-input>
       </ion-item>
       <div *ngIf="errores['email']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['email'] }}</div>
       <ion-item [ngClass]="{'input-error': errores['contrasena']}">
