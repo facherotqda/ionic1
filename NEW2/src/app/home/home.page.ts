@@ -1,31 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, AlertController } from '@ionic/angular/standalone';
+import { Component } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, CommonModule, FormsModule]
+  imports: [IonicModule],
 })
-export class HomePage implements OnInit {
-
-  usuario: string = '';
-  contrasena: string = '';
-
-  constructor(private alertCtrl: AlertController) { }
-
-  ngOnInit() { }
-
-  async ingresar() {
-    const alert = await this.alertCtrl.create({
-      header: 'Datos ingresados',
-      message: `Usuario: ${this.usuario}<br>Contraseña: ${this.contrasena}`,
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
+export class HomePage {
+  constructor() {}
 }

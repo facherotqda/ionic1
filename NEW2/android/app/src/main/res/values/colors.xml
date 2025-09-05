@@ -1,0 +1,8 @@
+<resources>
+    <color name="colorPrimary">#3880ff</color>
+    <color name="colorPrimaryDark">#3050b0</color>
+    <color name="colorAccent">#ffffff</color>
+
+    <!-- Color de fondo del splash -->
+    <color name="blue_background">#3880ff</color>
+</resources>
