@@ -34,7 +34,14 @@ const config: CapacitorConfig = {
       backgroundColor: "#3880ff",
       androidScaleType: "CENTER_CROP",
       iosScaleType: "CENTER_CROP",
-      showSpinner: false
+      showSpinner: false,
+      androidSplashResourceName: "splash"
+
+
+
+
+
+      
     }
   }
 };
