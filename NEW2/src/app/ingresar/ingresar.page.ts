@@ -2,6 +2,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, AlertController } from '@ionic/angular/standalone';
@@ -40,6 +41,8 @@ export class IngresarPage implements OnInit {
       this.credencialesService.setUsuarioActual(user);
       this.router.navigate(['/home']);
     } else {
+      // Vibración al ocurrir error
+      await Haptics.impact({ style: ImpactStyle.Heavy });
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'Usuario o contraseña incorrectos',
