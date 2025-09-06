@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, AlertController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { SupabaseDbService } from '../../services/supabase-db.service';
+import { User } from '@supabase/supabase-js';
+import { CredencialesService } from '../../services/credenciales.service';
 
 @Component({
   selector: 'app-ingresar',
@@ -18,23 +20,18 @@ export class IngresarPage implements OnInit {
   contrasenia: string = '';
 
 
-  constructor(private alertCtrl: AlertController, private router: Router, private supabaseDb: SupabaseDbService) { }
+  constructor(private alertCtrl: AlertController, private router: Router, private supabaseDb: SupabaseDbService, private credencialesService: CredencialesService) { }
 
   ngOnInit() { }
 
 
   async ingresar() {
     // Validar usuario y contraseña contra Supabase
-  const valido = await this.supabaseDb.validarUsuario(this.usuario, this.contrasenia);
-    if (valido) {
-      const alert = await this.alertCtrl.create({
-        header: 'Ingreso exitoso',
-        message: 'Bienvenido/a',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      // Redirigir si se desea
-      // this.router.navigate(['/home']);
+    const { user, valido } = await this.supabaseDb.validarUsuario(this.usuario, this.contrasenia);
+    if (valido && user) {
+      // Guardar usuario actual en el servicio
+      this.credencialesService.setUsuarioActual(user as User);
+      this.router.navigate(['/home']);
     } else {
       const alert = await this.alertCtrl.create({
         header: 'Error',

@@ -1,6 +1,8 @@
   import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseDbService } from '../../services/supabase-db.service';
+import { User } from '@supabase/supabase-js';
+import { CredencialesService } from '../../services/credenciales.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
@@ -44,7 +46,7 @@ export class RegistrarPage implements OnInit {
     }
   }
 
-  constructor(private router: Router, private supabaseDb: SupabaseDbService) { }
+  constructor(private router: Router, private supabaseDb: SupabaseDbService, private credencialesService: CredencialesService) { }
 
   ngOnInit() {}
 
@@ -93,16 +95,21 @@ export class RegistrarPage implements OnInit {
         return;
       }
       // Registrar usuario en Supabase
-      await this.supabaseDb.registrarUsuarioSimple(
+      const { user } = await this.supabaseDb.registrarUsuarioSimple(
         this.nombre,
         this.apellido,
         this.edad!,
         this.email,
         this.contrasenia
       );
-      this.mensajeTexto = 'Registro exitoso. Ahora puede ingresar.';
+      // Guardar usuario actual en el servicio
+      this.credencialesService.setUsuarioActual(user as User);
+      this.mensajeTexto = 'Registro exitoso. Redirigiendo a inicio...';
       this.mensajeTipo = 'success';
       this.mensajeVisible = true;
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 1200);
     } catch (e: any) {
       this.mensajeTexto = e.message || 'Ocurrió un error inesperado.';
       this.mensajeTipo = 'error';

@@ -14,15 +14,15 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class SupabaseDbService {
-  async validarUsuario(email: string, contrasenia: string): Promise<boolean> {
+  async validarUsuario(email: string, contrasenia: string): Promise<{ user: any | null, valido: boolean }> {
     const { data, error } = await this.supabase
       .from('usuarios')
-      .select('id')
+      .select('*')
       .eq('email', email)
       .eq('contrasenia', contrasenia)
       .maybeSingle();
     if (error && error.code !== 'PGRST116') throw error;
-    return !!data;
+    return { user: data || null, valido: !!data };
   }
   async existeEmail(email: string): Promise<boolean> {
     const { data, error } = await this.supabase
@@ -39,12 +39,21 @@ export class SupabaseDbService {
     this.supabase = createClient(environment.apiUrl, environment.publicAnonKey);
   }
 
-  async registrarUsuarioSimple(nombre: string, apellido: string, edad: number, email: string, contrasenia: string) {
+  async registrarUsuarioSimple(nombre: string, apellido: string, edad: number, email: string, contrasenia: string): Promise<{ user: any }> {
     const user_auth_id = uuidv4();
     const { error } = await this.supabase
       .from('usuarios')
       .insert([{ nombre, apellido, edad, email, contrasenia, fec_generacion: new Date().toISOString(), user_auth_id }]);
     if (error) throw error;
+    // Obtener el usuario recién insertado
+    const { data, error: errorSelect } = await this.supabase
+      .from('usuarios')
+      .select('*')
+      .eq('email', email)
+      .eq('user_auth_id', user_auth_id)
+      .maybeSingle();
+    if (errorSelect) throw errorSelect;
+    return { user: data };
   }
 
     async obtenerUsuarioActual(userAuthId: string) {

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CredencialesService } from '../../services/credenciales.service';
+import { User } from '@supabase/supabase-js';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -8,6 +10,13 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule],
 })
-export class HomePage {
-  constructor() {}
+export class HomePage implements OnInit {
+  usuarioActual: User | null = null;
+
+  constructor(private credencialesService: CredencialesService) {}
+
+  ngOnInit(): void {
+    this.usuarioActual = this.credencialesService.getUsuarioActual();
+    console.log('Usuario actual:', this.usuarioActual);
+  }
 }
