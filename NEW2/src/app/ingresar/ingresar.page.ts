@@ -1,4 +1,6 @@
 
+
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +19,13 @@ export class IngresarPage implements OnInit {
 
   usuario: string = '';
   contrasenia: string = '';
+
+  // Login rápido para usuarios de prueba
+  async loginRapido(email: string) {
+    this.usuario = email;
+    this.contrasenia = '123456';
+    await this.ingresar();
+  }
 
 
   constructor(private alertCtrl: AlertController, private router: Router, private supabaseDb: SupabaseDbService, private credencialesService: CredencialesService) { }
