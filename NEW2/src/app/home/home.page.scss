@@ -1,3 +1,22 @@
+@media (max-width: 600px) {
+	ion-header {
+		margin-top: 24px;
+	}
+}
+ion-header {
+	padding-top: constant(safe-area-inset-top);
+	padding-top: env(safe-area-inset-top);
+}
+ion-header, ion-toolbar {
+	--min-height: 44px;
+	min-height: 44px !important;
+	height: 44px !important;
+	padding-top: env(safe-area-inset-top, 0px);
+}
+
+ion-title[size="large"] {
+	font-size: 1.1em;
+}
 .empty-home {
 	display: flex;
 	flex-direction: column;

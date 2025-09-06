@@ -20,17 +20,32 @@ export interface Usuario {
 @Injectable({ providedIn: 'root' })
 export class CredencialesService {
 	private supabase: SupabaseClient;
-	private usuarioActual: Usuario | null = null;
+		private usuarioActual: Usuario | null = null;
 	private datosExtra: any = null;
 
-	constructor(private dbService: SupabaseDbService) {
-		this.supabase = dbService.getCliente();
-	}
-
-
-		setUsuarioActual(user: Usuario | null) {
-			this.usuarioActual = user;
+		constructor(private dbService: SupabaseDbService) {
+			this.supabase = dbService.getCliente();
+			// Recuperar usuarioActual de localStorage si existe
+			const userStr = localStorage.getItem('usuarioActual');
+			if (userStr) {
+				try {
+					this.usuarioActual = JSON.parse(userStr);
+				} catch (e) {
+					this.usuarioActual = null;
+				}
+			}
 		}
+
+
+
+			setUsuarioActual(user: Usuario | null) {
+				this.usuarioActual = user;
+				if (user) {
+					localStorage.setItem('usuarioActual', JSON.stringify(user));
+				} else {
+					localStorage.removeItem('usuarioActual');
+				}
+			}
 
 		getUsuarioActual(): Usuario | null {
 			return this.usuarioActual;

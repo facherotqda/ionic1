@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CredencialesService } from '../../services/credenciales.service';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,10 @@ export class HomePage implements OnInit {
   usuarioActual: any = null;
   nombreCompleto: string = '';
 
-  constructor(private credencialesService: CredencialesService) {}
+  constructor(
+    private credencialesService: CredencialesService,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit(): void {
     this.usuarioActual = this.credencialesService.getUsuarioActual();
@@ -21,5 +24,10 @@ export class HomePage implements OnInit {
       this.nombreCompleto = (this.usuarioActual.nombre || '') + ' ' + (this.usuarioActual.apellido || '');
     }
     console.log('Usuario actual:', this.usuarioActual);
+  }
+
+  cerrarSesion() {
+    this.credencialesService.setUsuarioActual(null);
+    this.navCtrl.navigateRoot(['/ingresar']);
   }
 }
