@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CredencialesService } from '../../services/credenciales.service';
-import { User } from '@supabase/supabase-js';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -11,12 +10,16 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule],
 })
 export class HomePage implements OnInit {
-  usuarioActual: User | null = null;
+  usuarioActual: any = null;
+  nombreCompleto: string = '';
 
   constructor(private credencialesService: CredencialesService) {}
 
   ngOnInit(): void {
     this.usuarioActual = this.credencialesService.getUsuarioActual();
+    if (this.usuarioActual) {
+      this.nombreCompleto = (this.usuarioActual.nombre || '') + ' ' + (this.usuarioActual.apellido || '');
+    }
     console.log('Usuario actual:', this.usuarioActual);
   }
 }

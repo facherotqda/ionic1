@@ -8,10 +8,10 @@
   </ion-header>
   <div class="empty-home">
     <ion-label style="font-size:1.2em; font-weight:bold; margin-bottom:8px; display:block;">
-  {{ usuarioActual?.email || 'Usuario' }}
+      {{ usuarioActual?.nombre || '' }} {{ usuarioActual?.apellido || '' }}
     </ion-label>
     <ion-label style="font-size:1em; color:#666; margin-bottom:16px; display:block;">
-  {{ usuarioActual?.email || '' }}
+      {{ usuarioActual?.email || '' }}
     </ion-label>
     <p>Esta es la página de inicio.</p>
   </div>

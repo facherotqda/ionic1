@@ -1,7 +1,6 @@
   import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseDbService } from '../../services/supabase-db.service';
-import { User } from '@supabase/supabase-js';
 import { CredencialesService } from '../../services/credenciales.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -94,7 +93,7 @@ export class RegistrarPage implements OnInit {
         this.errores['email'] = 'El email ya está registrado.';
         return;
       }
-      // Registrar usuario en Supabase
+      // Registrar usuario en Supabase Auth y guardar datos extra
       const { user } = await this.supabaseDb.registrarUsuarioSimple(
         this.nombre,
         this.apellido,
@@ -102,8 +101,7 @@ export class RegistrarPage implements OnInit {
         this.email,
         this.contrasenia
       );
-      // Guardar usuario actual en el servicio
-      this.credencialesService.setUsuarioActual(user as User);
+      this.credencialesService.setUsuarioActual(user);
       this.mensajeTexto = 'Registro exitoso. Redirigiendo a inicio...';
       this.mensajeTipo = 'success';
       this.mensajeVisible = true;

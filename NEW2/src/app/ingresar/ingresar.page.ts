@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, AlertController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { SupabaseDbService } from '../../services/supabase-db.service';
-import { User } from '@supabase/supabase-js';
 import { CredencialesService } from '../../services/credenciales.service';
 
 @Component({
@@ -26,11 +25,10 @@ export class IngresarPage implements OnInit {
 
 
   async ingresar() {
-    // Validar usuario y contraseña contra Supabase
+    // Login directo a la tabla usuarios
     const { user, valido } = await this.supabaseDb.validarUsuario(this.usuario, this.contrasenia);
     if (valido && user) {
-      // Guardar usuario actual en el servicio
-      this.credencialesService.setUsuarioActual(user as User);
+      this.credencialesService.setUsuarioActual(user);
       this.router.navigate(['/home']);
     } else {
       const alert = await this.alertCtrl.create({
