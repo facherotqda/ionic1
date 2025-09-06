@@ -1,5 +1,6 @@
   import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SupabaseDbService } from '../../services/supabase-db.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
@@ -21,8 +22,12 @@ export class RegistrarPage implements OnInit {
   apellido: string = '';
   edad: number | null = null;
   email: string = '';
-  contrasena: string = '';
+  contrasenia: string = '';
   errores: { [key: string]: string } = {};
+
+  mensajeTexto: string = '';
+  mensajeTipo: 'success' | 'error' = 'success';
+  mensajeVisible: boolean = false;
 
   validarEmail() {
     let mensaje = '';
@@ -39,7 +44,7 @@ export class RegistrarPage implements OnInit {
     }
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private supabaseDb: SupabaseDbService) { }
 
   ngOnInit() {}
 
@@ -51,7 +56,7 @@ export class RegistrarPage implements OnInit {
     }
   }
 
-  registrar() {
+  async registrar() {
     this.errores = {};
     // Validar nombre y apellido: solo letras y espacios
     const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
@@ -65,19 +70,44 @@ export class RegistrarPage implements OnInit {
     if (this.edad === null || isNaN(Number(this.edad)) || this.edad < 18 || this.edad > 110) {
       this.errores['edad'] = 'Debe ser un número entre 18 y 110.';
     }
-    // Correo: debe tener @
-    if (!/^\S+@\S+\.com$/.test(this.email)) {
-      this.errores['email'] = 'El correo debe contener @ y terminar en .com';
+    // Correo: debe tener @ y terminar en .com
+    if (!this.email.includes('@') || !this.email.endsWith('.com')) {
+      let mensaje = '';
+      if (!this.email.includes('@')) mensaje += 'Debe contener @ ';
+      if (!this.email.endsWith('.com')) mensaje += 'Debe terminar en .com.';
+      this.errores['email'] = mensaje.trim();
     }
     // Contraseña: alfanumérica (puede contener letras y números)
-    if (!/^[A-Za-z0-9]+$/.test(this.contrasena)) {
-      this.errores['contrasena'] = 'Solo letras y números.';
+    if (!/^[A-Za-z0-9]+$/.test(this.contrasenia)) {
+      this.errores['contrasenia'] = 'Solo letras y números.';
     }
     if (Object.keys(this.errores).length > 0) {
       return;
     }
-    // Aquí irá la lógica de registro
-    console.log('Datos:', this.nombre, this.apellido, this.edad, this.email, this.contrasena);
+
+    // Validar si el email ya existe en la base de datos
+    try {
+      const existe = await this.supabaseDb.existeEmail(this.email);
+      if (existe) {
+        this.errores['email'] = 'El email ya está registrado.';
+        return;
+      }
+      // Registrar usuario en Supabase
+      await this.supabaseDb.registrarUsuarioSimple(
+        this.nombre,
+        this.apellido,
+        this.edad!,
+        this.email,
+        this.contrasenia
+      );
+      this.mensajeTexto = 'Registro exitoso. Ahora puede ingresar.';
+      this.mensajeTipo = 'success';
+      this.mensajeVisible = true;
+    } catch (e: any) {
+      this.mensajeTexto = e.message || 'Ocurrió un error inesperado.';
+      this.mensajeTipo = 'error';
+      this.mensajeVisible = true;
+    }
   }
 
   soloLetrasInput(event: any, campo: 'nombre' | 'apellido') {

@@ -31,12 +31,16 @@
         <ion-input [(ngModel)]="email" type="email" (ionInput)="validarEmail()"></ion-input>
       </ion-item>
       <div *ngIf="errores['email']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['email'] }}</div>
-      <ion-item [ngClass]="{'input-error': errores['contrasena']}">
+      <ion-item [ngClass]="{'input-error': errores['contrasenia']}">
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input [(ngModel)]="contrasena" type="password"></ion-input>
+        <ion-input [(ngModel)]="contrasenia" type="password"></ion-input>
       </ion-item>
-      <div *ngIf="errores['contrasena']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['contrasena'] }}</div>
+      <div *ngIf="errores['contrasenia']" style="color: #ff6666; font-size: 0.9em; margin-bottom: 8px;">{{ errores['contrasenia'] }}</div>
       <ion-button expand="full" class="ion-margin-top" (click)="registrar()">Registrar</ion-button>
+
+      <div *ngIf="mensajeVisible" [ngStyle]="{ 'color': mensajeTipo === 'success' ? '#2ecc40' : '#ff3333', 'font-size': '1em', 'margin': '16px 0', 'text-align': 'center' }">
+        {{ mensajeTexto }}
+      </div>
       <div style="margin-top: 2rem; text-align: center;">
         <ion-label color="medium">¿Ya tiene un usuario?</ion-label>
         <br />
